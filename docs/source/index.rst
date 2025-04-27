@@ -1,22 +1,22 @@
-Welcome to Lumache's documentation!
-===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+.. DRILL_V3 documentation master file
 
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
+Welcome to DRILL_V3's documentation!
+====================================
 
-.. note::
-
-   This project is under active development.
-
-Contents
---------
+Contents:
 
 .. toctree::
+   :maxdepth=2
+   :caption: Contents:
 
+   install
    usage
-   api
+   structure
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
