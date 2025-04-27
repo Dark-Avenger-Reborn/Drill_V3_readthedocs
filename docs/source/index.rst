@@ -15,6 +15,9 @@ Contents:
    communication
    persistence
    post_exploitation
+   shell
+   remote_desktop
+   webcam
    file_transfer
    ui
    security
@@ -46,6 +49,8 @@ Although DRILL does not include built-in support for tunneling through services 
 
 All agent traffic runs over a single configurable port, simplifying deployment and making it easier to disguise C2 traffic as normal web activity.
 
+Communication between DRILL V3 and agents are ecrypted both ways using a mix of both RSA and AES encryption preventing third parties from intercepting and decoding traffic.
+
 Persistence
 -----------
 
@@ -56,17 +61,39 @@ Persistence is implemented per operating system. At this time, DRILL supports:
 
 There is currently no support for macOS agents in DRILL V3.
 
-Post-Exploitation Features
---------------------------
+Post-Exploitation Modules (PEMs)
+--------------------------------
 
-DRILL V3 includes several native post-exploitation features. These can be extended via a module system, allowing operators to customize their workflow. Built-in functionality includes:
+DRILL V3 supports a flexible module system for post-exploitation tasks. These **Post-Exploitation Modules (PEMs)** allow operators to extend functionality beyond the built-in features by writing and integrating Python modules.
 
-- **Shell Command Execution**: Operators can run arbitrary shell commands on any connected agent.
-- **Remote Desktop**: Agents can capture the screen allowing the operator to view and interact with the target in near real-time.
-- **Webcam Access**: If available on the host, the agent can stream webcam video to the operator.
-- **Scripting Support**: The system supports scripting via modules that can execute predefined tasks.
+Modules are executed in-memory and on a seperate thread. PEMs can be used for a variety of tasks, including enumeration, lateral movement, or host-specific actions. They are easy to write and integrate, following a minimal interface standard.
 
-More advanced operations can be implemented via custom modules developed in Python and integrated into the system.
+For examples and templates, see the [post_exploitation.rst](post_exploitation.html) page.
+
+Shell Access
+------------
+
+DRILL provides real-time shell access to agents through the UI. Operators can execute arbitrary commands on a target system and receive immediate responses. This feature behaves similarly to a traditional reverse shell but is wrapped within the secure, WebSocket-based communication channel used by DRILL.
+
+More details and usage examples are available on the [shell.rst](shell.html) page.
+
+Remote Desktop
+--------------
+
+DRILL V3 includes a remote desktop capability that allows operators to capture screenshots from the target machine. This provides visibility into the user’s active desktop session and can assist in visual reconnaissance.
+
+Agent builds also support remote interaction, enabling limited control of the mouse and keyboard. These capabilities depend on the target platform and environment.
+
+Refer to the [remote_desktop.rst](remote_desktop.html) page for supported features and usage instructions.
+
+Webcam Access
+-------------
+
+Where supported, DRILL V3 agents can interface with connected webcams on the host machine. This allows the operator to view live camera feeds directly from the DRILL UI.
+
+This feature works similarly to Remote Desktop as it uses screenshots to reconstruct a live video feed. Webcam access is particularly useful in physical reconnaissance during on-site red team assessments.
+
+Setup detail and security implications are documented in [webcam.rst](webcam.html).
 
 File Transfer
 -------------
@@ -74,9 +101,9 @@ File Transfer
 The framework supports bi-directional file transfer to and from agents. This includes:
 
 - Uploading executables, scripts, and configuration files to agents.
-- Downloading captured data, screenshots, webcam footage, or log files.
+- Downloading captured data, personal files, configurations, and log files.
 
-Transfers can be initiated through the UI. The system supports transfers to and from multiple agents in parallel.
+Transfers can be initiated manually through the UI. The system supports transfers to multiple agents in parallel.
 
 User Interface
 --------------
@@ -86,9 +113,9 @@ DRILL's web-based UI is operator-centric, designed for clarity and speed. Throug
 - Monitor connected agents and their statuses.
 - Launch new commands or module-based operations.
 - View screen captures or webcam streams.
-- Browse transferred files and session logs.
+- Browse transferred files.
 
-Additionally, the UI includes an optional login page that can be enabled or disabled via the configuration file. The same file can also be used to configure other interface behaviors such as streaming quality, UI themes, and modules.
+The UI includes an optional login screen which can be enabled through the DRILL configuration file. Other configuration options include session timeouts, logging verbosity, and interface theme settings.
 
 Security Considerations
 -----------------------
@@ -100,7 +127,5 @@ Operators should:
 - Avoid exposing the teamserver to the internet without protection.
 - Use strong authentication if enabling the login page.
 - Monitor logs for anomalous activity.
-- Secure agent binaries to prevent unauthorized distribution.
 
-It is also recommended to tunnel DRILL through services like Cloudflare or NGROK and not proxys as it can cause errors when locating clients geographically.
-
+It is also recommended to tunnel DRILL through services like Cloudflare and not proxies which can cause errors with IP discovery and geolocating.
