@@ -2,7 +2,7 @@
 Installation
 ============
 
-To install DRILL_V3, run the provided install script:
+To install DRILL V3, run the provided install script:
 
 .. code-block:: bash
 

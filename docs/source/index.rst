@@ -1,7 +1,7 @@
 
-.. DRILL_V3 documentation master file
+.. DRILL V3 documentation master file
 
-Welcome to DRILL_V3's documentation!
+Welcome to DRILL V3's documentation!
 ====================================
 
 Contents:
