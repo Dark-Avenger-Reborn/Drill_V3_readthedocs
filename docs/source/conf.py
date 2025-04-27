@@ -2,7 +2,7 @@
 # Configuration file for the Sphinx documentation builder.
 
 project = 'DRILL V3'
-copyright = '2025'
+copyright = '2024, Oz Abramovich'
 author = 'Oz Abramovich'
 
 extensions = [
